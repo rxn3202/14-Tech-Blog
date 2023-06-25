@@ -7,36 +7,37 @@
   <title>Tech Blog</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 </head>
 
 <body>
   <div class="wrapper">
     <header>
       <h1>
-        <p class="blog-title">Tech Blog <i class="large material-icons">build</i></p>
+        <p class="blog-title">Tech Blog <i class="large material-icons">laptop_mac</i></p>
       </h1>
     
-    <nav>
-    {{#if loggedIn}}
-    <a href="/" class="homepage">Homepage</a>
-    <a href="/dashboard">Dashboard</a>
-    <button id="logout" class="btn-no-style">Logout</button>
-    {{else}}
-    <a href="/" class="homepage">Homepage</a>
-    <a href="/login">Login</a>
-    {{/if}}
-    </nav>
+      <nav>
+        {{#if loggedIn}}
+          <a href="/" class="homepage">Homepage</a>
+          <a href="/dashboard">Dashboard</a>
+          <button id="logout" class="btn-no-style">Logout</button>
+        {{else}}
+          <a href="/" class="homepage">Homepage</a>
+          <a href="/login">Login</a>
+        {{/if}}
+      </nav>
     </header>
+    
     <main>
       {{{ body }}}
+      {{> comment}}
+      {{> post}}
     </main>
   </div>
 
-    {{#if loggedIn}}
+  {{#if loggedIn}}
     <script src="/javascript/logout.js"></script>
-    {{/if}}
-
+  {{/if}}
 </body>
 
 </html>
