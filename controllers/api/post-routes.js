@@ -19,6 +19,26 @@ router.post("/", withAuth, async (req, res) => {
 });
 
 // Route to update an existing blog post
+router.put("/:id", withAuth, async (req, res) => {
+  try {
+    const blogPostData = await BlogPost.update(req.body, {
+      where: {
+        id: req.params.id,
+        user_id: req.session.user_id,
+      },
+    });
+
+    if (!blogPostData[0]) {
+      res.status(404).json({ message: "No blog post found with this id!" });
+      return;
+    }
+
+    res.status(200).json(blogPostData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
 
 // Route to delete an existing blog post
 
