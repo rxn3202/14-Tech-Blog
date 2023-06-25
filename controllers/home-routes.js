@@ -33,6 +33,33 @@ router.get("/", async (req, res) => {
   });
 
 // Route to display a single blog post
+router.get("/blogPost/:id", withAuth, async (req, res) => {
+    try {
+      const blogPostData = await BlogPost.findByPk(req.params.id, {
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+          {
+            model: Comment,
+            include: [User],
+          },
+        ],
+      });
+  
+      const blogPost = blogPostData.get({ plain: true });
+  
+      res.render("blogPost", {
+        ...blogPost,
+        logged_in: req.session.logged_in,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json(err);
+      res.redirect("/login");
+    }
+  });
 
 // Route to display the dashboard page
 
