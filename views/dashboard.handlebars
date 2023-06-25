@@ -7,9 +7,9 @@
   <div class="container">
     <div class="row">
       <div class="col-md-10 mx-auto text-left mt-5">
-        {{#if blogPosts.length}}
-          {{#each blogPosts as |blogPost|}}
-            {{> dashboardPost blogPost}}
+        {{#if blog.length}}
+          {{#each blog as |blog|}}
+            {{> Post blog}}
             <br>
           {{/each}}
         {{else}}
