@@ -91,10 +91,64 @@ router.get("/dashboard", withAuth, async (req, res) => {
   });
 
 // Route to display the create page for a new blog post
+router.get("/create", async (req, res) => {
+    try {
+      if (req.session.logged_in) {
+        res.render("create", {
+          logged_in: req.session.logged_in,
+          userId: req.session.user_id,
+        });
+      } else {
+        res.redirect("/login");
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json(err);
+    }
+  });
 
 // Route to display the edit page for an existing blog post
+router.get("/create/:id", async (req, res) => {
+    try {
+      const blogPostData = await BlogPost.findByPk(req.params.id, {
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+          {
+            model: Comment,
+            include: [User],
+          },
+        ],
+      });
+
+      const blogPost = blogPostData.get({ plain: true });
+  
+      if (req.session.logged_in) {
+        res.render("edit", {
+          ...blogPost,
+          logged_in: req.session.logged_in,
+          userId: req.session.user_id,
+        });
+      } else {
+        res.redirect("/login");
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json(err);
+    }
+  });
   
 // Route to display the login page
+router.all("/login", (req, res) => {
+    
+    if (req.session.logged_in) {
+      res.redirect("/dashboard");
+    } else {
+      res.render("login");
+    }
+  });
 
 // Export
 module.exports = router;
