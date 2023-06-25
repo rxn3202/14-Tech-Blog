@@ -62,6 +62,33 @@ router.get("/blogPost/:id", withAuth, async (req, res) => {
   });
 
 // Route to display the dashboard page
+router.get("/dashboard", withAuth, async (req, res) => {
+    try {
+      
+      const userData = await User.findByPk(req.session.user_id, {
+        attributes: { exclude: ["password"] },
+        include: [
+          {
+            model: BlogPost,
+            include: [User],
+          },
+          {
+            model: Comment,
+          },
+        ],
+      });
+  
+      const user = userData.get({ plain: true });
+  
+      res.render("dashboard", {
+        ...user,
+        logged_in: true,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json(err);
+    }
+  });
 
 // Route to display the create page for a new blog post
 
